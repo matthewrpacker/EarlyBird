@@ -1,16 +1,7 @@
-//
-//  EarlyBirdTests.swift
-//  EarlyBirdTests
-//
-//  Created by Matthew R. Packer on 10/21/16.
-//  Copyright © 2016 EarlyBird LLC. All rights reserved.
-//
-
 import XCTest
 @testable import EarlyBird
 
 class EarlyBirdTests: XCTestCase {
-    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -32,5 +23,4 @@ class EarlyBirdTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-    
 }

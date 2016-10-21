@@ -1,15 +1,6 @@
-//
-//  EarlyBirdUITests.swift
-//  EarlyBirdUITests
-//
-//  Created by Matthew R. Packer on 10/21/16.
-//  Copyright © 2016 EarlyBird LLC. All rights reserved.
-//
-
 import XCTest
 
 class EarlyBirdUITests: XCTestCase {
-        
     override func setUp() {
         super.setUp()
         
@@ -32,5 +23,4 @@ class EarlyBirdUITests: XCTestCase {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
-    
 }
