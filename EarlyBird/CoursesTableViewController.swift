@@ -2,8 +2,7 @@ import UIKit
 import Foundation
 
 class CoursesTableViewController: UITableViewController {
-    // Hardcode course names for initial UI
-    var courseNames = ["Wellshire", "Overland Park", "Kennedy"]
+    var courseNames = [String]()
     
     init() {
         super.init(style: .plain)
@@ -12,8 +11,6 @@ class CoursesTableViewController: UITableViewController {
     }
     
     required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-
-    // UITableViewDataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return courseNames.count
@@ -30,7 +27,6 @@ class CoursesTableViewController: UITableViewController {
     }
     
     func makeGetRequest() {
-        // Set up the URL request for one specific course to before tring all courses
         let courseEndpoint: String = "https://early-bird-courses.herokuapp.com/api/v1/courses/1"
         
         guard let url = URL(string: courseEndpoint) else {
@@ -39,21 +35,17 @@ class CoursesTableViewController: UITableViewController {
         }
         
         let urlRequest = URLRequest(url: url)
-        // set up the session
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
         
         // make the GET request
         let task = session.dataTask(with: urlRequest) { (data, response, error) in
-            // check for any errors
             guard error == nil else {
                 print("error calling GET on /courses/1")
                 print(error)
                 return
             }
-            // make sure data was returned
-            print("THIS IS THE DATA!!!\(data)")
-            
+
             guard let responseData = data else {
                 print("Error: did not receive data")
                 return
@@ -72,11 +64,16 @@ class CoursesTableViewController: UITableViewController {
                     print("Could not get course name from JSON")
                     return
                 }
-                // prove that I can access the course name by printing courseName constant
-                print("The course is the course name: \(courseName)!!!")
+                self.courseNames.append(courseName)
+                // prove that courseName is appended to courseNames array
+                print(self.courseNames)
             } catch  {
                 print("error trying to convert data to JSON")
                 return
+            }
+            // reload main thread (UI view) with appended data
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
         }
         task.resume()
