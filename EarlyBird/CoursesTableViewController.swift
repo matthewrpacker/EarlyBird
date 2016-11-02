@@ -2,80 +2,69 @@ import UIKit
 import Foundation
 
 class CoursesTableViewController: UITableViewController {
-    var courseNames = [String]()
-    
+    var courses = [Course]()
+
     init() {
         super.init(style: .plain)
         title = "Courses"
+    }
+    required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") } // NSCoding
+
+    // MARK: - UIViewController
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
         makeGetRequest()
     }
     
-    required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-    
+    // MARK: - UITableViewDataSource
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return courseNames.count
+        return courses.count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: String(describing: UITableViewCell.self)) as UITableViewCell?
         if cell == nil {
             cell = UITableViewCell(style: .subtitle, reuseIdentifier: String(describing: UITableViewCell.self))
             cell!.textLabel!.font = .systemFont(ofSize: 18)
+            cell!.accessoryType = .disclosureIndicator
         }
-        cell!.textLabel!.text = courseNames[indexPath.row]
+        let course = courses[indexPath.row]
+        cell!.textLabel!.text = course.name
+        cell!.detailTextLabel!.text = course.address
         return cell!
     }
-    
-    func makeGetRequest() {
-        let courseEndpoint: String = "https://early-bird-courses.herokuapp.com/api/v1/courses/1"
-        
-        guard let url = URL(string: courseEndpoint) else {
-            print("Error: cannot create URL")
-            return
-        }
-        
-        let urlRequest = URLRequest(url: url)
-        let config = URLSessionConfiguration.default
-        let session = URLSession(configuration: config)
-        
-        // make the GET request
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
-            guard error == nil else {
-                print("error calling GET on /courses/1")
-                print(error)
-                return
-            }
 
+    // MARK: - UITableViewDelegate
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let course = courses[indexPath.row]
+        UIApplication.shared.open(course.webURL, options: [:])
+    }
+
+    // MARK: - Helpers
+
+    func makeGetRequest() {
+        let courseEndpoint = "https://early-bird-courses.herokuapp.com/api/v1/courses"
+        let urlRequest = URLRequest(url: URL(string: courseEndpoint)!)
+
+        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             guard let responseData = data else {
-                print("Error: did not receive data")
-                return
-            }
-            // parse the result as JSON
-            do {
-                guard let course = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
-                    print("error trying to convert data to JSON")
-                    return
+                return DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "Networing Error", message: "Could not connect.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+                    self.present(alert, animated: true)
                 }
-                // print the entire course dictionary
-                print("The course is: \(course)")
-                
-                // assign course["name"] to constant courseName
-                guard let courseName = course["name"] as? String else {
-                    print("Could not get course name from JSON")
-                    return
-                }
-                self.courseNames.append(courseName)
-                // prove that courseName is appended to courseNames array
-                print(self.courseNames)
-            } catch  {
-                print("error trying to convert data to JSON")
-                return
             }
-            // reload main thread (UI view) with appended data
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            let courseDictionaries = try! JSONSerialization.jsonObject(with: responseData, options: JSONSerialization.ReadingOptions(rawValue: 0)) as! [[String: AnyObject]]
+            for courseDictionary in courseDictionaries {
+                let course = Course(dictionary: courseDictionary)
+                self.courses.append(course)
             }
+            DispatchQueue.main.async { self.tableView.reloadData() }
         }
-        task.resume()
+        dataTask.resume()
     }
 }

@@ -13,6 +13,7 @@
 		DC0215E21DBA49A600BDFC7D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC0215E01DBA49A600BDFC7D /* LaunchScreen.storyboard */; };
 		DC0215ED1DBA49A600BDFC7D /* EarlyBirdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0215EC1DBA49A600BDFC7D /* EarlyBirdTests.swift */; };
 		DC0215F81DBA49A600BDFC7D /* EarlyBirdUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0215F71DBA49A600BDFC7D /* EarlyBirdUITests.swift */; };
+		DCF59A351DCA241D00DF36D8 /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF59A341DCA241D00DF36D8 /* Course.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		DC0215F31DBA49A600BDFC7D /* EarlyBirdUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EarlyBirdUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC0215F71DBA49A600BDFC7D /* EarlyBirdUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarlyBirdUITests.swift; sourceTree = "<group>"; };
 		DC0215F91DBA49A600BDFC7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCF59A341DCA241D00DF36D8 /* Course.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 			children = (
 				DC0215D71DBA49A500BDFC7D /* AppDelegate.swift */,
 				DC0215D91DBA49A500BDFC7D /* CoursesTableViewController.swift */,
+				DCF59A341DCA241D00DF36D8 /* Course.swift */,
 				DC0215DE1DBA49A600BDFC7D /* Assets.xcassets */,
 				DC0215E01DBA49A600BDFC7D /* LaunchScreen.storyboard */,
 				DC0215E31DBA49A600BDFC7D /* Info.plist */,
@@ -255,6 +258,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCF59A351DCA241D00DF36D8 /* Course.swift in Sources */,
 				DC0215DA1DBA49A500BDFC7D /* CoursesTableViewController.swift in Sources */,
 				DC0215D81DBA49A500BDFC7D /* AppDelegate.swift in Sources */,
 			);
